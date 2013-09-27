@@ -5,12 +5,44 @@
 	curpath = path.split('/').slice(0, -1).join('/')+'/';
 	$(function() { 
 		codiad.autocomplete.init();
-	});
-	codiad.autocomplete = {
- 		init: function() {
-			amplify.subscribe("Complete.Init", function() {
- 				alert("yeah");
-			}); 
+    });
+    codiad.autocomplete = {
+        init: function() {
+            filepath = codiad.active.getPath().split(".");
+            switch(filepath[filepath.length -1]) {
+                case "php":
+                    var functions = [
+                        codiad.Complete.pluginParser("str_replace"),
+                        codiad.Complete.pluginParser("preg_replace")
+                    ];
+                break;
+                case "js":
+                    var functions = [
+                        codiad.Complete.pluginParser("switch"),
+                        codiad.Complete.pluginParser("alert")
+                    ];
+                break;
+                case "css":
+                    var functions = [
+                        codiad.Complete.pluginParser("border"),
+                        codiad.Complete.pluginParser("color")
+                    ];
+                break;
+                case "html":
+                    var functions = [
+                        codiad.Complete.pluginParser("canvas"),
+                        codiad.Complete.pluginParser("video")
+                    ];
+                break;
+                default:
+                    var functions = [
+                        codiad.Complete.pluginParser("")
+                    ];
+                break;
+            }
+            if(codiad.Complete.pluginInit(functions)) {
+                
+            }
 		},
 	};
 })(this, jQuery);
